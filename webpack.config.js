@@ -11,11 +11,17 @@ module.exports = {
    devServer: {
       historyApiFallback: true
    },
+   mode: 'development',
    module: {
       rules: [
          {
             test: /\.jsx?/,
-            use: 'babel-loader',
+            exclude : /(node_modules)/,
+            use: {
+               loader: 'babel-loader',
+               options: {
+                  presets: ['@babel/preset-env','@babel/preset-react']
+               }}
          },
          {
             test: /\.s[ac]ss$/,
@@ -32,5 +38,10 @@ module.exports = {
          template: path.resolve( __dirname, '/index.html' ),
          filename: 'index.html'
       })
-   ]
+   ],
+   devServer: {
+      proxy: {
+         '/api': 'http://localhost:3000'
+      },
+   }
 };
